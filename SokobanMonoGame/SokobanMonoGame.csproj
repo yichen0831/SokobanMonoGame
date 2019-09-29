@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="GameSystem\Crate.cs" />
+    <Compile Include="GameSystem\GameParameters.cs" />
     <Compile Include="GameSystem\IDrawable.cs" />
     <Compile Include="GameSystem\IUpdatable.cs" />
     <Compile Include="GameSystem\MainGame.cs" />

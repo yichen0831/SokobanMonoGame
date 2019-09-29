@@ -55,6 +55,11 @@ namespace SokobanMonoGame.GameSystem
                             Tiles[y].Add(TileType.Target);
                             Player = new Tuple<int, int>(x, y);
                             break;
+                        case '*':
+                            // Crate on target
+                            Tiles[y].Add(TileType.Target);
+                            Crates.Add(new Tuple<int, int>(x, y));
+                            break;
                         case '`':
                         default:
                             Tiles[y].Add(TileType.None);

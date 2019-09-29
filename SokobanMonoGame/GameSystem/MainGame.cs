@@ -70,11 +70,11 @@ namespace SokobanMonoGame.GameSystem
 
             map = new Map(sokobanTexture2D);
             map.Load(mapLoader.Tiles);
-            map.Offset = new Vector2(64f, 64f);
+            map.Offset = new Vector2(GameParameters.TileSize, GameParameters.TileSize);
 
             player = new Player(sokobanTexture2D)
             {
-                Position = new Vector2(64f * mapLoader.Player.Item1, 64f * mapLoader.Player.Item2) + map.Offset
+                Position = new Vector2(GameParameters.TileSize * mapLoader.Player.Item1, GameParameters.TileSize * mapLoader.Player.Item2) + map.Offset
             };
 
             crates = new List<Crate>();
@@ -82,8 +82,9 @@ namespace SokobanMonoGame.GameSystem
             {
                 Crate crate = new Crate(sokobanTexture2D)
                 {
-                    Position = new Vector2(64f * item.Item1, 64f * item.Item2) + map.Offset
+                    Position = new Vector2(GameParameters.TileSize * item.Item1, GameParameters.TileSize * item.Item2) + map.Offset
                 };
+                crate.Activated = map.IsTarget(item.Item1, item.Item2);
                 crates.Add(crate);
             }
         }
@@ -114,8 +115,6 @@ namespace SokobanMonoGame.GameSystem
 
             if (!isLevelCompleted)
             {
-
-
                 if (keyboardState.IsKeyDown(Keys.R))
                 {
                     // Reset
@@ -283,8 +282,8 @@ namespace SokobanMonoGame.GameSystem
             foreach (var crate in crates)
             {
                 Vector2 pos = crate.Position - map.Offset;
-                int crateX = (int)(pos.X / 64f);
-                int crateY = (int)(pos.Y / 64f);
+                int crateX = (int)(pos.X / GameParameters.TileSize);
+                int crateY = (int)(pos.Y / GameParameters.TileSize);
                 if (x == crateX && y == crateY)
                 {
                     return true;
@@ -310,8 +309,8 @@ namespace SokobanMonoGame.GameSystem
 
         private Vector2 ConvertPosition(Vector2 screenPos)
         {
-            int x = (int)((screenPos.X - map.Offset.X) / 64f);
-            int y = (int)((screenPos.Y - map.Offset.Y) / 64f);
+            int x = (int)((screenPos.X - map.Offset.X) / GameParameters.TileSize);
+            int y = (int)((screenPos.Y - map.Offset.Y) / GameParameters.TileSize);
             return new Vector2(x, y);
         }
 

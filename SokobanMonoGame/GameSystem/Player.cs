@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace SokobanMonoGame.GameSystem
 {
@@ -29,14 +28,15 @@ namespace SokobanMonoGame.GameSystem
         public bool IsMoving { get; private set; }
         private Vector2 target;
         private float movingTime;
-        private readonly float movingDistance = 64f;
+        private readonly float movingDistance = GameParameters.TileSize;
+        private readonly float movingInterval = GameParameters.MoveInterval;
 
         public Player(Texture2D texture2D)
         {
-            rightTextureRegion = new TextureRegion(texture2D, new Rectangle(0, 128, 64, 64));
-            leftTextureRegion = new TextureRegion(texture2D, new Rectangle(64, 192, 64, 64));
-            upTextureRegion = new TextureRegion(texture2D, new Rectangle(0, 192, 64, 64));
-            downTextureRegion = new TextureRegion(texture2D, new Rectangle(64, 128, 64, 64));
+            rightTextureRegion = new TextureRegion(texture2D, new Rectangle(0, GameParameters.TileSize * 2, GameParameters.TileSize, GameParameters.TileSize));
+            leftTextureRegion = new TextureRegion(texture2D, new Rectangle(GameParameters.TileSize, GameParameters.TileSize * 3, GameParameters.TileSize, GameParameters.TileSize));
+            upTextureRegion = new TextureRegion(texture2D, new Rectangle(0, GameParameters.TileSize * 3, GameParameters.TileSize, GameParameters.TileSize));
+            downTextureRegion = new TextureRegion(texture2D, new Rectangle(GameParameters.TileSize, GameParameters.TileSize * 2, GameParameters.TileSize, GameParameters.TileSize));
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -69,7 +69,7 @@ namespace SokobanMonoGame.GameSystem
             if (IsMoving)
             {
                 movingTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                float alpha = (movingTime) / 0.32f;
+                float alpha = (movingTime) / movingInterval;
                 Position = Vector2.Lerp(Position, target, alpha);
 
                 if (alpha >= 1f)

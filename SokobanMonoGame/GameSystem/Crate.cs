@@ -18,12 +18,13 @@ namespace SokobanMonoGame.GameSystem
         private bool isMoving;
         private Vector2 target;
         private float movingTime;
-        private readonly float movingDistance = 64f;
+        private readonly float movingDistance = GameParameters.TileSize;
+        private readonly float movingInterval = GameParameters.MoveInterval;
 
         public Crate(Texture2D texture2D)
         {
-            normalTextureRegion = new TextureRegion(texture2D, new Rectangle(0, 0, 64, 64));
-            activatedTextureRegion = new TextureRegion(texture2D, new Rectangle(64, 0, 64, 64));
+            normalTextureRegion = new TextureRegion(texture2D, new Rectangle(0, 0, GameParameters.TileSize, GameParameters.TileSize));
+            activatedTextureRegion = new TextureRegion(texture2D, new Rectangle(GameParameters.TileSize, 0, GameParameters.TileSize, GameParameters.TileSize));
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -46,7 +47,7 @@ namespace SokobanMonoGame.GameSystem
             if (isMoving)
             {
                 movingTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                float alpha = (movingTime) / 0.32f;
+                float alpha = (movingTime) / movingInterval;
                 Position = Vector2.Lerp(Position, target, alpha);
 
                 if (alpha >= 1f)
