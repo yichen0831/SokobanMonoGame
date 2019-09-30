@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SokobanMonoGame.GameSystem.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,6 +46,8 @@ namespace SokobanMonoGame.GameSystem
         private bool isLevelCompleted;
         private readonly float changeLevelInterval = 1f;
         private float changeLevelCountDown;
+        private TextButton resetButton;
+        SpriteFont font;
 
         public MainGame(ContentManager content, SpriteBatch spriteBatch)
         {
@@ -55,6 +58,14 @@ namespace SokobanMonoGame.GameSystem
         public void Init()
         {
             sokobanTexture2D = content.Load<Texture2D>("sokoban");
+            font = content.Load<SpriteFont>("KennyFuture");
+            Texture2D normalButtonTexture2D = content.Load<Texture2D>("YellowButtonUp");
+            Texture2D pressedButtonTexture2D = content.Load<Texture2D>("YellowButtonDown");
+            TextureRegion normalButtonTextRegion = new TextureRegion(normalButtonTexture2D, normalButtonTexture2D.Bounds);
+            TextureRegion pressedButtonTextureRegion = new TextureRegion(pressedButtonTexture2D, pressedButtonTexture2D.Bounds);
+            resetButton = new TextButton(normalButtonTextRegion, pressedButtonTextureRegion, font, "Reset");
+            resetButton.Position = new Vector2(600, 540);
+            resetButton.ClickedEvent += Load;
 
             Load();
         }
@@ -95,6 +106,7 @@ namespace SokobanMonoGame.GameSystem
             {
                 case State.GameInProcess:
                     GameInProcess(gameTime);
+                    resetButton.Update(gameTime);
                     break;
                 case State.GameCompleted:
                     GameCompleted(gameTime);
@@ -247,6 +259,8 @@ namespace SokobanMonoGame.GameSystem
                 crate.Draw(spriteBatch);
             }
             player.Draw(spriteBatch);
+            spriteBatch.DrawString(font, $"Sokoban Level {currentLevel + 1}", new Vector2(0, 0), Color.White);
+            resetButton.Draw(spriteBatch);
             spriteBatch.End();
         }
 
