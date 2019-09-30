@@ -46,8 +46,9 @@ namespace SokobanMonoGame.GameSystem
         private bool isLevelCompleted;
         private readonly float changeLevelInterval = 1f;
         private float changeLevelCountDown;
-        private TextButton resetButton;
-        SpriteFont font;
+        private SpriteFont font;
+        private SimpleUI simpleUI;
+        private Label levelLabel;
 
         public MainGame(ContentManager content, SpriteBatch spriteBatch)
         {
@@ -63,9 +64,17 @@ namespace SokobanMonoGame.GameSystem
             Texture2D pressedButtonTexture2D = content.Load<Texture2D>("YellowButtonDown");
             TextureRegion normalButtonTextRegion = new TextureRegion(normalButtonTexture2D, normalButtonTexture2D.Bounds);
             TextureRegion pressedButtonTextureRegion = new TextureRegion(pressedButtonTexture2D, pressedButtonTexture2D.Bounds);
-            resetButton = new TextButton(normalButtonTextRegion, pressedButtonTextureRegion, font, "Reset");
-            resetButton.Position = new Vector2(600, 540);
+
+            simpleUI = new SimpleUI(spriteBatch);
+            levelLabel = new Label(font, "Sokoban");
+            levelLabel.Position = new Vector2(10, 10);
+            levelLabel.Color = Color.White;
+            simpleUI.Add(levelLabel);
+
+            TextButton resetButton = new TextButton(normalButtonTextRegion, pressedButtonTextureRegion, font, "Reset");
+            resetButton.Position = new Vector2(600, 10);
             resetButton.ClickedEvent += Load;
+            simpleUI.Add(resetButton);
 
             Load();
         }
@@ -74,6 +83,7 @@ namespace SokobanMonoGame.GameSystem
         {
             isLevelCompleted = false;
             changeLevelCountDown = changeLevelInterval;
+            levelLabel.Text = $"Sokoban Level {currentLevel + 1}";
 
             MapLoader mapLoader = new MapLoader();
             string filename = Path.Combine(content.RootDirectory, levels[currentLevel]);
@@ -106,7 +116,6 @@ namespace SokobanMonoGame.GameSystem
             {
                 case State.GameInProcess:
                     GameInProcess(gameTime);
-                    resetButton.Update(gameTime);
                     break;
                 case State.GameCompleted:
                     GameCompleted(gameTime);
@@ -117,6 +126,8 @@ namespace SokobanMonoGame.GameSystem
                 default:
                     break;
             }
+
+            simpleUI.Update(gameTime);
         }
 
         private void GameInProcess(GameTime gameTime)
@@ -259,9 +270,9 @@ namespace SokobanMonoGame.GameSystem
                 crate.Draw(spriteBatch);
             }
             player.Draw(spriteBatch);
-            spriteBatch.DrawString(font, $"Sokoban Level {currentLevel + 1}", new Vector2(0, 0), Color.White);
-            resetButton.Draw(spriteBatch);
             spriteBatch.End();
+
+            simpleUI.Draw();
         }
 
         private bool CheckMovable(Vector2 pos, Vector2 move)

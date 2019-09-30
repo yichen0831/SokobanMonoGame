@@ -54,7 +54,10 @@
     <Compile Include="GameSystem\Player.cs" />
     <Compile Include="GameSystem\Sprite.cs" />
     <Compile Include="GameSystem\TextureRegion.cs" />
+    <Compile Include="GameSystem\UI\Label.cs" />
+    <Compile Include="GameSystem\UI\SimpleUI.cs" />
     <Compile Include="GameSystem\UI\TextButton.cs" />
+    <Compile Include="GameSystem\UI\UIElement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

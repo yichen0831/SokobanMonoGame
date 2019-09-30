@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SokobanMonoGame.GameSystem.UI
 {
-    abstract class Button
+    abstract class Button : UIElement
     {
         protected TextureRegion normalTextureRegion;
         protected TextureRegion pressedTextureRegion;
