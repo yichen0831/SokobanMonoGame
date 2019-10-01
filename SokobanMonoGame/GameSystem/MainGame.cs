@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -47,6 +48,9 @@ namespace SokobanMonoGame.GameSystem
         private readonly float changeLevelInterval = 1f;
         private float changeLevelCountDown;
         private SpriteFont font;
+        private SoundEffect clickSoundEffect;
+        private SoundEffect stepSoundEffect;
+        private SoundEffect powerOnSoundEffect;
         private SimpleUI simpleUI;
         private Label levelLabel;
 
@@ -59,6 +63,9 @@ namespace SokobanMonoGame.GameSystem
         public void Init()
         {
             sokobanTexture2D = content.Load<Texture2D>("sokoban");
+            clickSoundEffect = content.Load<SoundEffect>("switch");
+            stepSoundEffect = content.Load<SoundEffect>("footstep");
+            powerOnSoundEffect = content.Load<SoundEffect>("poweron");
             font = content.Load<SpriteFont>("KennyFuture");
             Texture2D normalButtonTexture2D = content.Load<Texture2D>("YellowButtonUp");
             Texture2D pressedButtonTexture2D = content.Load<Texture2D>("YellowButtonDown");
@@ -73,9 +80,15 @@ namespace SokobanMonoGame.GameSystem
 
             TextButton resetButton = new TextButton(normalButtonTextRegion, pressedButtonTextureRegion, font, "Reset");
             resetButton.Position = new Vector2(600, 10);
-            resetButton.ClickedEvent += Load;
+            resetButton.ClickedEvent += OnResetButtonClicked;
             simpleUI.Add(resetButton);
 
+            Load();
+        }
+
+        private void OnResetButtonClicked()
+        {
+            clickSoundEffect.Play();
             Load();
         }
 
@@ -150,6 +163,7 @@ namespace SokobanMonoGame.GameSystem
                     var move = new Vector2(-1, 0);
                     if (!player.IsMoving && CheckMovable(pos, move))
                     {
+                        stepSoundEffect.Play();
                         player.FaceLeft();
                         player.MoveLeft();
                         var cratePos = pos + move;
@@ -159,7 +173,11 @@ namespace SokobanMonoGame.GameSystem
                             crate.MoveLeft();
                             bool isTarget = map.IsTarget(cratePos + move);
                             crate.Activated = isTarget;
-                            shouldCheckComplete = true;
+                            if (isTarget)
+                            {
+                                powerOnSoundEffect.Play();
+                                shouldCheckComplete = true;
+                            }
                         }
                     }
                 }
@@ -170,6 +188,7 @@ namespace SokobanMonoGame.GameSystem
                     var move = new Vector2(1, 0);
                     if (!player.IsMoving && CheckMovable(pos, move))
                     {
+                        stepSoundEffect.Play();
                         player.FaceRight();
                         player.MoveRight();
                         Vector2 cratePos = pos + move;
@@ -179,7 +198,11 @@ namespace SokobanMonoGame.GameSystem
                             crate.MoveRight();
                             bool isTarget = map.IsTarget(cratePos + move);
                             crate.Activated = isTarget;
-                            shouldCheckComplete = true;
+                            if (isTarget)
+                            {
+                                powerOnSoundEffect.Play();
+                                shouldCheckComplete = true;
+                            }
                         }
                     }
                 }
@@ -190,6 +213,7 @@ namespace SokobanMonoGame.GameSystem
                     var move = new Vector2(0, -1);
                     if (!player.IsMoving && CheckMovable(pos, move))
                     {
+                        stepSoundEffect.Play();
                         player.FaceUp();
                         player.MoveUp();
                         var cratePos = pos + move;
@@ -199,7 +223,11 @@ namespace SokobanMonoGame.GameSystem
                             crate.MoveUp();
                             bool isTarget = map.IsTarget(cratePos + move);
                             crate.Activated = isTarget;
-                            shouldCheckComplete = true;
+                            if (isTarget)
+                            {
+                                powerOnSoundEffect.Play();
+                                shouldCheckComplete = true;
+                            }
                         }
                     }
                 }
@@ -210,6 +238,7 @@ namespace SokobanMonoGame.GameSystem
                     var move = new Vector2(0, 1);
                     if (!player.IsMoving && CheckMovable(pos, move))
                     {
+                        stepSoundEffect.Play();
                         player.FaceDown();
                         player.MoveDown();
                         var cratePos = pos + move;
@@ -219,7 +248,11 @@ namespace SokobanMonoGame.GameSystem
                             crate.MoveDown();
                             bool isTarget = map.IsTarget(cratePos + move);
                             crate.Activated = isTarget;
-                            shouldCheckComplete = true;
+                            if (isTarget)
+                            {
+                                powerOnSoundEffect.Play();
+                                shouldCheckComplete = true;
+                            }
                         }
                     }
                 }

@@ -13,12 +13,24 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin footstep.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:footstep.ogg
+
 #begin KennyFuture.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:KennyFuture.spritefont
+
+#begin poweron.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:poweron.mp3
 
 #begin sokoban.png
 /importer:TextureImporter
@@ -31,6 +43,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=NoChange
 /build:sokoban.png
+
+#begin switch.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:switch.ogg
 
 #begin YellowButtonDown.png
 /importer:TextureImporter
